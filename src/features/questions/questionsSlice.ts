@@ -4,6 +4,7 @@ import type { RootState } from "./../../store";
 
 // Define a type for the slice state
 interface QuestionState {
+  id: number;
   title: string;
   body: string;
   rightAnswer: number;
@@ -13,19 +14,23 @@ interface QuestionState {
 // Define the initial state using that type
 const initialState: QuestionState[] = [
   {
-    title: "",
+    id: 1,
+    title: "Question A?",
     body: "",
     rightAnswer: 0,
     wrongAnswer: 0,
   },
   {
-    title: "",
+    id: 2,
+
+    title: "Question B?",
     body: "",
     rightAnswer: 0,
     wrongAnswer: 0,
   },
   {
-    title: "",
+    id: 3,
+    title: "Question C?",
     body: "",
     rightAnswer: 0,
     wrongAnswer: 0,
