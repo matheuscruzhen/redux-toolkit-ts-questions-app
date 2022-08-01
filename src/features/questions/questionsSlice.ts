@@ -44,10 +44,20 @@ export const questionsSlice = createSlice({
     addQuestion: (state, action: PayloadAction<QuestionState>) => {
       state.push(action.payload);
     },
+    // updatedQuestion: (state, action: PayloadAction<QuestionState>) => {
+    //   const questions = state.filter(
+    //     (question) => question.id !== action.payload.id
+    //   );
+    //   const updated = action.payload;
+    //   state = [...questions, updated];
+    // },
+    deleteQuestion: (state, action: PayloadAction<number>) => {
+      return state.filter((question) => question.id !== action.payload);
+    },
   },
 });
 
-export const { addQuestion } = questionsSlice.actions;
+export const { addQuestion, deleteQuestion } = questionsSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectAll = (state: RootState) => state.questions;
