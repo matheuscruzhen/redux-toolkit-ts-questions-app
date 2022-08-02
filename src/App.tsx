@@ -1,8 +1,10 @@
 import React from "react";
+import { Route, Routes } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./common/hooks";
 import {
-  addQuestion,
-  deleteQuestion,
+  questionAdded,
+  questionDeleted,
+  questionUpdated,
   selectAll,
 } from "./features/questions/questionsSlice";
 
@@ -12,16 +14,14 @@ const App: React.FC = () => {
 
   const add = () =>
     dispatch(
-      addQuestion({
+      questionAdded({
         id: 4,
         title: "Question D?",
-        body: "",
-        rightAnswer: 0,
-        wrongAnswer: 0,
+        answer: "",
       })
     );
 
-  const remove = (questionId: number) => dispatch(deleteQuestion(questionId));
+  const remove = (questionId: number) => dispatch(questionDeleted(questionId));
 
   const renderedQuestions = questions.map((question) => (
     <li key={question.id}>
@@ -31,6 +31,9 @@ const App: React.FC = () => {
   ));
 
   return (
+    // <Routes>
+    //   <Route path="" element={} />
+    // </Routes>
     <div className="App">
       <h2>Questions App</h2>
       <ul>{renderedQuestions}</ul>

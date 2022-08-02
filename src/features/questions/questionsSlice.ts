@@ -6,9 +6,7 @@ import type { RootState } from "./../../store";
 interface QuestionState {
   id: number;
   title: string;
-  body: string;
-  rightAnswer: number;
-  wrongAnswer: number;
+  answer: string;
 }
 
 // Define the initial state using that type
@@ -16,24 +14,18 @@ const initialState: QuestionState[] = [
   {
     id: 1,
     title: "Question A?",
-    body: "",
-    rightAnswer: 0,
-    wrongAnswer: 0,
+    answer: "",
   },
   {
     id: 2,
 
     title: "Question B?",
-    body: "",
-    rightAnswer: 0,
-    wrongAnswer: 0,
+    answer: "",
   },
   {
     id: 3,
     title: "Question C?",
-    body: "",
-    rightAnswer: 0,
-    wrongAnswer: 0,
+    answer: "",
   },
 ];
 
@@ -41,25 +33,29 @@ export const questionsSlice = createSlice({
   name: "questions",
   initialState,
   reducers: {
-    addQuestion: (state, action: PayloadAction<QuestionState>) => {
+    questionAdded: (state, action: PayloadAction<QuestionState>) => {
       state.push(action.payload);
     },
-    // updatedQuestion: (state, action: PayloadAction<QuestionState>) => {
-    //   const questions = state.filter(
-    //     (question) => question.id !== action.payload.id
-    //   );
-    //   const updated = action.payload;
-    //   state = [...questions, updated];
-    // },
-    deleteQuestion: (state, action: PayloadAction<number>) => {
+    questionUpdated: (state, action: PayloadAction<QuestionState>) => {
+      const questions = state.filter(
+        (question) => question.id !== action.payload.id
+      );
+      const updated = action.payload;
+      state = [...questions, updated];
+    },
+    questionDeleted: (state, action: PayloadAction<number>) => {
       return state.filter((question) => question.id !== action.payload);
     },
   },
 });
 
-export const { addQuestion, deleteQuestion } = questionsSlice.actions;
+export const { questionAdded, questionDeleted, questionUpdated } =
+  questionsSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectAll = (state: RootState) => state.questions;
+
+export const selectById = (state: RootState, id: number) =>
+  state.questions.find((question) => question.id === id);
 
 export default questionsSlice.reducer;
