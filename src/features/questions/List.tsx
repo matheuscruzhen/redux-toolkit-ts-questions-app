@@ -7,7 +7,7 @@ import { selectAll } from "./questionsSlice";
 const List: React.FC = () => {
   const questions = useAppSelector(selectAll);
 
-  const renderedQuestions = questions.map((question) => (
+  const renderedQuestions = questions?.map((question) => (
     <Link to={`${question.id}`} key={question.id}>
       <span>{question.title}</span>
     </Link>
