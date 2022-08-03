@@ -1,19 +1,32 @@
 import React, { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../common/hooks";
+import { questionAdded } from "./questionsSlice";
 
 const CreateForm: React.FC = () => {
   const [title, setTitle] = useState("");
   const [answer, setAnswer] = useState("");
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const onTitleChange = (e: FormEvent<HTMLInputElement>) =>
     setTitle(e.currentTarget.value);
   const onAnswerChange = (e: FormEvent<HTMLInputElement>) =>
     setAnswer(e.currentTarget.value);
 
-  const submit = () => {
-    console.log({
-      title,
-      answer,
-    });
+  const canSave = [title, answer].every(Boolean);
+
+  const submit = (e: FormEvent) => {
+    e.preventDefault();
+
+    if (canSave) {
+      dispatch(questionAdded({ title, answer }));
+
+      navigate("/questions");
+    } else {
+      console.log("could not save");
+    }
   };
 
   return (
