@@ -41,11 +41,12 @@ export const questionsSlice = createSlice({
       state.push({ id: nanoid(), ...action.payload });
     },
     questionUpdated: (state, action: PayloadAction<QuestionState>) => {
-      const questions = state.filter(
-        (question) => question.id !== action.payload.id
-      );
-      const updated = action.payload;
-      state = [...questions, updated];
+      const { id, answer, title } = action.payload;
+
+      const index = state.findIndex((question) => question.id === id);
+
+      state[index].title = title;
+      state[index].answer = answer;
     },
     questionDeleted: (state, action: PayloadAction<string>) => {
       return state.filter((question) => question.id !== action.payload);
