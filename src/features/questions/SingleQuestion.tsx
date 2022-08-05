@@ -26,20 +26,35 @@ const Question: React.FC = () => {
 
   const renderedQuestion = question && (
     <section>
-      <h3>Title</h3>
-      <p>{question.title}</p>
-      <h3>Answer</h3>
-      <p>{question.answer}</p>
+      <p className="text-xl mb-2">{question.title}</p>
+      <blockquote className="mb-2">{question.answer}</blockquote>
 
-      <button onClick={editQuestion}>Edit</button>
-      <button onClick={removeQuestion}>Remove</button>
+      <span className="flex flex-row sm:justify-center space-x-4">
+        <button
+          className="text-xl bg-blue-300 py-1 px-2 rounded-md"
+          onClick={editQuestion}
+        >
+          Edit
+        </button>
+        <button
+          className="text-xl bg-red-300 py-1 px-2 rounded-md"
+          onClick={removeQuestion}
+        >
+          Remove
+        </button>
+      </span>
     </section>
   );
 
   return (
     <div>
-      <button onClick={() => navigate("/questions")}>Back</button>
-      <h2>Question</h2>
+      <button
+        className="text-xl bg-slate-300 py-1 px-2 rounded-md"
+        onClick={() => navigate("/questions")}
+      >
+        Back
+      </button>
+      <p className="flex sm:justify-center text-3xl mb-4">Question</p>
       {renderedQuestion}
     </div>
   );

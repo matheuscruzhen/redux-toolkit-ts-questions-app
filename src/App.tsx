@@ -3,10 +3,18 @@ import { Link } from "react-router-dom";
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <h2>Questions App</h2>
-      <Link to={"/questions"}>List</Link>
-      <Link to={"/questions/create"}>New Question</Link>
+    <div>
+      <p className="flex text-3xl sm:justify-center">Questions App</p>
+      <nav className="flex sm:justify-center space-x-4 bg-slate-400">
+        {[
+          ["List", "/questions"],
+          ["Create", "/questions/create"],
+        ].map(([title, url]) => (
+          <Link className="text-xl" to={url}>
+            {title}
+          </Link>
+        ))}
+      </nav>
     </div>
   );
 };

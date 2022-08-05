@@ -8,16 +8,18 @@ const List: React.FC = () => {
   const questions = useAppSelector(selectAll);
 
   const renderedQuestions = questions?.map((question) => (
-    <Link to={`${question.id}`} key={question.id}>
+    <Link className="text-xl mb-2" to={`${question.id}`} key={question.id}>
       <span>{question.title}</span>
     </Link>
   ));
 
   return (
-    <div className="App">
-      <Link to={"create"}>New</Link>
-      <h2>Questions</h2>
-      <ul>{renderedQuestions}</ul>
+    <div>
+      <Link className="text-xl bg-slate-300 py-1 px-2 rounded-md" to={"create"}>
+        New
+      </Link>
+      <p className="text-3xl mb-4">List Of Questions</p>
+      <ul className="flex flex-col">{renderedQuestions}</ul>
     </div>
   );
 };
