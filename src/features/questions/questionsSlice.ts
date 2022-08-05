@@ -14,18 +14,21 @@ const initialState: QuestionState[] = [
   {
     id: "1",
     title: "Question A?",
-    answer: "",
+    answer:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem earum itaque quos ab! Perspiciatis temporibus voluptas veritatis laborum sequi, rerum impedit laboriosam nostrum blanditiis ducimus assumenda vel, tenetur pariatur deleniti.",
   },
   {
     id: "2",
 
     title: "Question B?",
-    answer: "",
+    answer:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem earum itaque quos ab! Perspiciatis temporibus voluptas veritatis laborum sequi, rerum impedit laboriosam nostrum blanditiis ducimus assumenda vel, tenetur pariatur deleniti.",
   },
   {
     id: "3",
     title: "Question C?",
-    answer: "",
+    answer:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem earum itaque quos ab! Perspiciatis temporibus voluptas veritatis laborum sequi, rerum impedit laboriosam nostrum blanditiis ducimus assumenda vel, tenetur pariatur deleniti.",
   },
 ];
 
