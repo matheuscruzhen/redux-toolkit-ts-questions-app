@@ -1,25 +1,46 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import { useAppSelector } from "../../common/hooks";
-import { selectAll } from "./questionsSlice";
+import { useAppDispatch, useAppSelector } from "../../common/hooks";
+import { store } from "../../store";
+import {
+  fetchQuestions,
+  selectAllQuestions,
+  getQuestionsError,
+  getQuestionsStatus,
+} from "./questionsSlice";
 
 const List: React.FC = () => {
-  const questions = useAppSelector(selectAll);
+  const dispatch = useAppDispatch();
+  const questions = useAppSelector(selectAllQuestions);
+  const questionsStatus = useAppSelector(getQuestionsStatus);
+  const error = useAppSelector(getQuestionsError);
 
-  const renderedQuestions = questions?.map((question) => (
-    <Link className="text-xl mb-2" to={`${question.id}`} key={question.id}>
-      <span>{question.title}</span>
-    </Link>
-  ));
+  useEffect(() => {
+    if (questionsStatus === "idle") {
+      dispatch(fetchQuestions());
+    }
+  }, [questionsStatus, dispatch]);
 
+  let content;
+  if (questionsStatus === "succeeded") {
+    content = questions.map((question) => (
+      <Link key={question.id} to={`${question.id}`}>
+        <span>{question.title}</span>
+      </Link>
+    ));
+  } else if (questionsStatus === "loading") {
+    content = <p>Loading...</p>;
+  } else if (questionsStatus === "error") {
+    content = <p>{error}</p>;
+  }
   return (
     <div>
       <Link className="text-xl bg-slate-300 py-1 px-2 rounded-md" to={"create"}>
         New
       </Link>
       <p className="text-3xl mb-4">List Of Questions</p>
-      <ul className="flex flex-col">{renderedQuestions}</ul>
+      <ul className="flex flex-col">{content}</ul>
     </div>
   );
 };
