@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../common/hooks";
 import { RootState } from "../../rootReducer";
-import { questionUpdated, selectById } from "./questionsSlice";
+import { updateQuestion, selectById } from "./questionsSlice";
 
 const EditForm: React.FC = () => {
   const { id } = useParams();
@@ -33,7 +33,9 @@ const EditForm: React.FC = () => {
     e.preventDefault();
 
     if (canSave) {
-      id && dispatch(questionUpdated({ id, title, answer }));
+      const updated = { ...question, title, answer };
+
+      id && dispatch(updateQuestion(updated));
 
       navigate("/questions");
     } else {

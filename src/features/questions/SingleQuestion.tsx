@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { RootState } from "../../store";
 import { useAppDispatch } from "../../common/hooks";
-import { questionDeleted, selectById } from "./questionsSlice";
+import { deleteQuestion, selectById } from "./questionsSlice";
 
 const Question: React.FC = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Question: React.FC = () => {
   };
 
   const removeQuestion = () => {
-    id && dispatch(questionDeleted(id));
+    question && dispatch(deleteQuestion(question));
 
     navigate(`/questions`);
   };

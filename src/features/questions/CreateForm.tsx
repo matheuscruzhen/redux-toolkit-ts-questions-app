@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../common/hooks";
-import { questionAdded } from "./questionsSlice";
+import { addNewQuestion } from "./questionsSlice";
 
 const CreateForm: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -21,7 +21,7 @@ const CreateForm: React.FC = () => {
     e.preventDefault();
 
     if (canSave) {
-      dispatch(questionAdded({ title, answer }));
+      dispatch(addNewQuestion({ title, answer }));
 
       navigate("/questions");
     } else {
