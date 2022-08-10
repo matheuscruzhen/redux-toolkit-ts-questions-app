@@ -1,13 +1,12 @@
-import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import type { RootState } from "./../../store";
 
 const QUESTIONS_URL = "http://localhost:1337/questions";
 
-// Define a type for the slice state
 interface QuestionState {
-  _id: string;
+  _id?: string;
   title: string;
   answer: string;
 }
@@ -33,31 +32,47 @@ export const fetchQuestions = createAsyncThunk(
   }
 );
 
+export const addNewQuestion = createAsyncThunk(
+  "questions/addNewQuestion",
+  async (question: QuestionState) => {
+    const response = await axios.post(QUESTIONS_URL, question);
+    return response.data;
+  }
+);
+
+export const updateQuestion = createAsyncThunk(
+  "questions/updateQuestion",
+  async (question: QuestionState) => {
+    const { _id } = question;
+
+    try {
+      const response = await axios.patch(`${QUESTIONS_URL}/${_id}`, question);
+      return response.data;
+    } catch (err: any) {
+      return err.message;
+    }
+  }
+);
+
+export const deleteQuestion = createAsyncThunk(
+  "questions/deleteQuestion",
+  async (question: QuestionState) => {
+    const { _id } = question;
+
+    try {
+      const response = await axios.delete(`${QUESTIONS_URL}/${_id}`);
+      if (response?.status === 200) return question;
+      return `${response?.status}: ${response?.statusText}`;
+    } catch (err: any) {
+      return err.message;
+    }
+  }
+);
+
 export const questionsSlice = createSlice({
   name: "questions",
   initialState,
-  reducers: {
-    questionAdded: (
-      state,
-      action: PayloadAction<Omit<QuestionState, "_id">>
-    ) => {
-      console.log("Question Added");
-      state.questions.push({ _id: nanoid(), ...action.payload });
-    },
-    questionUpdated: (state, action: PayloadAction<QuestionState>) => {
-      const { _id, answer, title } = action.payload;
-
-      const index = state.questions.findIndex(
-        (question) => question._id === _id
-      );
-
-      state.questions[index].title = title;
-      state.questions[index].answer = answer;
-    },
-    questionDeleted: (state, action: PayloadAction<string>) => {
-      state.questions.filter((question) => question._id !== action.payload);
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(fetchQuestions.pending, (state, action) => {
@@ -70,12 +85,47 @@ export const questionsSlice = createSlice({
       .addCase(fetchQuestions.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
-      });
+      })
+      .addCase(
+        addNewQuestion.fulfilled,
+        (state, action: PayloadAction<QuestionState>) => {
+          console.log(action.payload);
+          state.questions.push(action.payload);
+        }
+      )
+      .addCase(
+        updateQuestion.fulfilled,
+        (state, action: PayloadAction<QuestionState>) => {
+          if (!action.payload?._id) {
+            console.log("Update could not complete");
+            console.log(action.payload);
+            return;
+          }
+          console.log(action.payload);
+          const { _id } = action.payload;
+          const questions = state.questions.filter(
+            (question) => question._id !== _id
+          );
+          state.questions = [...questions, action.payload];
+        }
+      )
+      .addCase(
+        deleteQuestion.fulfilled,
+        (state, action: PayloadAction<QuestionState>) => {
+          if (!action.payload?._id) {
+            console.log("Delete could not complete");
+            console.log(action.payload);
+            return;
+          }
+          const { _id } = action.payload;
+          const questions = state.questions.filter(
+            (question) => question._id !== _id
+          );
+          state.questions = questions;
+        }
+      );
   },
 });
-
-export const { questionAdded, questionDeleted, questionUpdated } =
-  questionsSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectAllQuestions = (state: RootState) =>
