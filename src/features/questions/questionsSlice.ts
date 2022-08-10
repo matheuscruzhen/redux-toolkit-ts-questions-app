@@ -3,11 +3,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import type { RootState } from "./../../store";
 
-const QUESTIONS_URL = "http://localhost:3500/questions";
+const QUESTIONS_URL = "http://localhost:1337/questions";
 
 // Define a type for the slice state
 interface QuestionState {
-  id: string;
+  _id: string;
   title: string;
   answer: string;
 }
@@ -39,21 +39,23 @@ export const questionsSlice = createSlice({
   reducers: {
     questionAdded: (
       state,
-      action: PayloadAction<Omit<QuestionState, "id">>
+      action: PayloadAction<Omit<QuestionState, "_id">>
     ) => {
       console.log("Question Added");
-      state.questions.push({ id: nanoid(), ...action.payload });
+      state.questions.push({ _id: nanoid(), ...action.payload });
     },
     questionUpdated: (state, action: PayloadAction<QuestionState>) => {
-      const { id, answer, title } = action.payload;
+      const { _id, answer, title } = action.payload;
 
-      const index = state.questions.findIndex((question) => question.id === id);
+      const index = state.questions.findIndex(
+        (question) => question._id === _id
+      );
 
       state.questions[index].title = title;
       state.questions[index].answer = answer;
     },
     questionDeleted: (state, action: PayloadAction<string>) => {
-      state.questions.filter((question) => question.id !== action.payload);
+      state.questions.filter((question) => question._id !== action.payload);
     },
   },
   extraReducers(builder) {
@@ -82,6 +84,6 @@ export const getQuestionsStatus = (state: RootState) => state.questions.status;
 export const getQuestionsError = (state: RootState) => state.questions.error;
 
 export const selectById = (state: RootState, questionId: string) =>
-  state.questions.questions.find((question) => question.id === questionId);
+  state.questions.questions.find((question) => question._id === questionId);
 
 export default questionsSlice.reducer;

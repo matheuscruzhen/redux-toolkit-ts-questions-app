@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../../common/hooks";
-import { store } from "../../store";
 import {
   fetchQuestions,
   selectAllQuestions,
@@ -25,7 +24,7 @@ const List: React.FC = () => {
   let content;
   if (questionsStatus === "succeeded") {
     content = questions.map((question) => (
-      <Link key={question.id} to={`${question.id}`}>
+      <Link key={question._id} to={`${question._id}`}>
         <span>{question.title}</span>
       </Link>
     ));
