@@ -11,6 +11,9 @@ import EditForm from "./features/questions/EditForm";
 import { store } from "./store";
 
 import "./index.css";
+import { fetchQuestions } from "./features/questions/questionsSlice";
+
+store.dispatch(fetchQuestions());
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
