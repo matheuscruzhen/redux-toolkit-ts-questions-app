@@ -24,22 +24,26 @@ const Question: React.FC = () => {
     navigate(`/questions`);
   };
 
-  const renderedQuestion = question && (
-    <section>
-      <p className="text-xl mb-2">{question.title}</p>
-      <blockquote className="mb-2">{question.answer}</blockquote>
+  const classes = {
+    container: "h-screen p-8 bg-neutral-900 text-white",
+    heading: "text-3xl text-center font-semibold uppercase mb-8",
+    questionContainer: "border-y border-neutral-700 p-8",
+    title: "text-2xl mb-2 border-neutral-700",
+    answer: "mb-8 ",
+    buttonContainer: "flex flex-row justify-center space-x-4",
+    button: "bg-neutral-500 text-white rounded h-8 px-4 py-1",
+  };
 
-      <span className="flex flex-row sm:justify-center space-x-4">
-        <button
-          className="text-xl bg-blue-300 py-1 px-2 rounded-md"
-          onClick={editQuestion}
-        >
+  const renderedQuestion = question && (
+    <section className={classes.questionContainer}>
+      <p className={classes.title}>{question.title}</p>
+      <blockquote className={classes.answer}>{question.answer}</blockquote>
+
+      <span className={classes.buttonContainer}>
+        <button className={classes.button} onClick={editQuestion}>
           Edit
         </button>
-        <button
-          className="text-xl bg-red-300 py-1 px-2 rounded-md"
-          onClick={removeQuestion}
-        >
+        <button className={classes.button} onClick={removeQuestion}>
           Remove
         </button>
       </span>
@@ -47,14 +51,11 @@ const Question: React.FC = () => {
   );
 
   return (
-    <div>
-      <button
-        className="text-xl bg-slate-300 py-1 px-2 rounded-md"
-        onClick={() => navigate("/questions")}
-      >
+    <div className={classes.container}>
+      <button className={classes.button} onClick={() => navigate("/questions")}>
         Back
       </button>
-      <p className="flex sm:justify-center text-3xl mb-4">Question</p>
+      <p className={classes.heading}>Question</p>
       {renderedQuestion}
     </div>
   );
