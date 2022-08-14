@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Pagination from "../../components/Pagination";
 
 import { useAppDispatch, useAppSelector } from "../../common/hooks";
 import {
@@ -15,6 +16,11 @@ const List: React.FC = () => {
   const questionsStatus = useAppSelector(getQuestionsStatus);
   const error = useAppSelector(getQuestionsError);
 
+  const [pageNumber, setPageNumber] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const pagesVisited = pageNumber * rowsPerPage;
+  const pageCount = Math.ceil(questions.length / rowsPerPage);
+
   const classes = {
     container: "h-screen p-8 bg-neutral-900 text-white",
     heading: "text-2xl text-center font-semibold uppercase mb-4",
@@ -29,17 +35,23 @@ const List: React.FC = () => {
     }
   }, [questionsStatus, dispatch]);
 
+  const handlePageClick = (selectedPage: { selected: number }) => {
+    setPageNumber(selectedPage.selected);
+  };
+
   let content;
   if (questionsStatus === "succeeded") {
-    content = questions.map((question) => (
-      <Link
-        className={classes.listElement}
-        key={question._id}
-        to={`${question._id}`}
-      >
-        <span>{question.title}</span>
-      </Link>
-    ));
+    content = questions
+      .slice(pagesVisited, pagesVisited + rowsPerPage)
+      .map((question) => (
+        <Link
+          className={classes.listElement}
+          key={question._id}
+          to={`${question._id}`}
+        >
+          <span>{question.title}</span>
+        </Link>
+      ));
   } else if (questionsStatus === "loading") {
     content = <p>Loading...</p>;
   } else if (questionsStatus === "error") {
@@ -52,6 +64,14 @@ const List: React.FC = () => {
       </Link>
       <p className={classes.heading}>List Of Questions</p>
       <ul className={classes.list}>{content}</ul>
+      <Pagination
+        rows={questions.length}
+        pageCount={pageCount}
+        pageNumber={pageNumber}
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
+        handlePageClick={handlePageClick}
+      />
     </div>
   );
 };
