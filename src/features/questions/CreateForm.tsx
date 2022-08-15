@@ -15,7 +15,10 @@ const CreateForm: React.FC = () => {
   const onAnswerChange = (e: FormEvent<HTMLTextAreaElement>) =>
     setAnswer(e.currentTarget.value);
 
-  const canSave = [title, answer].every(Boolean);
+  const canSave = [
+    title,
+    // answer
+  ].every(Boolean);
 
   const submit = (e: FormEvent) => {
     e.preventDefault();

@@ -41,6 +41,7 @@ const index: React.FC<Props> = ({
       <span className="h-full flex flex-row">
         <span>
           <select
+            value={rowsPerPage}
             className="text-black rounded"
             onChange={(e) => setRowsPerPage(+e.target.value)}
           >

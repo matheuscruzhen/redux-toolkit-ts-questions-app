@@ -17,7 +17,7 @@ const List: React.FC = () => {
   const error = useAppSelector(getQuestionsError);
 
   const [pageNumber, setPageNumber] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
   const pagesVisited = pageNumber * rowsPerPage;
   const pageCount = Math.ceil(questions.length / rowsPerPage);
 
